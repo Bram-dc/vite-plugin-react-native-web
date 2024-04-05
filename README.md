@@ -26,10 +26,10 @@ export default defineConfig({
 
 If you are getting errors please report them in the issues section.
 
-The following variables are transformed by the plugin:
-- `global` is transformed to `window`
-- `__DEV__` is transformed to `JSON.stringify(process.env.NODE_ENV === 'development')`
-- `process.env.NODE_ENV` is transformed to `JSON.stringify(process.env.NODE_ENV)`
+The following variables are defined in the transformed files: (inferred during Vite's build process)
+- `global` as `window`
+- `__DEV__` as `process.env.NODE_ENV === 'development'`
+- `process.env.NODE_ENV` as `process.env.NODE_ENV`
 
 ## Contributing
 Please feel free to contribute to this project. Just fork it and submit a PR.
