@@ -24,7 +24,7 @@ export default defineConfig({
 });
 ```
 
-If you are getting errors of please report them in the issues section.
+If you are getting errors please report them in the issues section.
 
 The following variables are transformed by the plugin:
 - `global` is transformed to `window`
@@ -36,4 +36,3 @@ Please feel free to contribute to this project. Just fork it and submit a PR.
 
 ## License
 MIT
-```
