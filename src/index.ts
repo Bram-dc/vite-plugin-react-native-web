@@ -76,7 +76,14 @@ const reactNativeWeb = (/*options: ViteReactNativeWebOptions = {}*/): VitePlugin
         if (code.includes('@flow'))
             code = flowRemoveTypes(code).toString()
 
-        return (await transformWithEsbuild(code, id, { loader: loader['.js'] })).code
+        return (await transformWithEsbuild(code, id, {
+            loader: loader['.js'],
+            tsconfigRaw: {
+                compilerOptions: {
+                    jsx: 'react-jsx',
+                },
+            },
+        })).code
     },
 })
 
