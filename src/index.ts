@@ -69,21 +69,28 @@ const reactNativeWeb = (/*options: ViteReactNativeWebOptions = {}*/): VitePlugin
         },
     }),
 
-    async transform(code, id) {
-        if (!filter.test(id))
-            return code
+    transform(code, id) {
+        if (!filter.test(id)) {
+            return
+        }
 
-        if (code.includes('@flow'))
+        // Skip files that are using 'use client' pragma since these break esbuild mappings (https://github.com/vitejs/vite/issues/15012)
+        if (code.includes('\'use client\'') || code.includes('"use client"')) {
+            return
+        }
+
+        if (code.includes('@flow')) {
             code = flowRemoveTypes(code).toString()
+        }
 
-        return (await transformWithEsbuild(code, id, {
+        return transformWithEsbuild(code, id, {
             loader: loader['.js'],
             tsconfigRaw: {
                 compilerOptions: {
                     jsx: 'react-jsx',
                 },
             },
-        })).code
+        })
     },
 })
 
