@@ -36,7 +36,7 @@ const filter = /\.(js|flow)$/
 
 const esbuildPlugin = (): ESBuildPlugin => ({
     name: 'react-native-web',
-    setup: build => {
+    setup: (build) => {
         build.onLoad({ filter }, async ({ path }) => {
             const src = await fs.readFile(path, 'utf-8')
             return {
@@ -69,21 +69,23 @@ const reactNativeWeb = (/*options: ViteReactNativeWebOptions = {}*/): VitePlugin
         },
     }),
 
-    transform(code, id) {
+    async transform(code, id) {
         if (!filter.test(id)) {
             return
         }
 
-        // Skip files that are using 'use client' pragma since these break esbuild mappings (https://github.com/vitejs/vite/issues/15012)
+        let includeSourceMaps = true
+
+        // Do not include source maps for files that are using 'use client' pragma since these break the esbuild mappings (https://github.com/vitejs/vite/issues/15012)
         if (code.includes('\'use client\'') || code.includes('"use client"')) {
-            return
+            includeSourceMaps = false
         }
 
         if (code.includes('@flow')) {
             code = flowRemoveTypes(code).toString()
         }
 
-        return transformWithEsbuild(code, id, {
+        const result = await transformWithEsbuild(code, id, {
             loader: loader['.js'],
             tsconfigRaw: {
                 compilerOptions: {
@@ -91,6 +93,11 @@ const reactNativeWeb = (/*options: ViteReactNativeWebOptions = {}*/): VitePlugin
                 },
             },
         })
+
+        return {
+            code: result.code,
+            map: includeSourceMaps ? result.map : null,
+        }
     },
 })
 
