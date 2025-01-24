@@ -4,6 +4,11 @@
 
 Add React Native Web support to Vite by removing Flow types, aliasing `react-native` to `react-native-web` and transforming .js files as .jsx files using ESBuild.
 
+### Supported versions
+- vite@4 > Not supported
+- vite@5 > Working
+- vite@6 > Currently broken
+
 ## Installation
 
 Just install it:
