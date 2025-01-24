@@ -62,6 +62,7 @@ const reactNativeWeb = (/*options: ViteReactNativeWebOptions = {}*/): VitePlugin
 			alias: [{ find: 'react-native', replacement: 'react-native-web' }],
 		},
 		optimizeDeps: {
+            extensions,
 			esbuildOptions: {
 				plugins: [esbuildPlugin()],
 				resolveExtensions: extensions,
