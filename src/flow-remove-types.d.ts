@@ -1,5 +1,5 @@
 declare module 'flow-remove-types' {
-    export default function flowRemoveTypes(src: string): {
-        toString(): string
-    }
+	export default function flowRemoveTypes(src: string): {
+		toString(): string
+	}
 }

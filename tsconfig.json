@@ -1,27 +1,19 @@
 {
-    "compilerOptions": {
-        "allowSyntheticDefaultImports": true,
-        "esModuleInterop": true,
-        "lib": [
-            "es6"
-        ],
-        "module": "esnext",
-        "moduleResolution": "node",
-        "noEmit": true,
-        "noEmitOnError": false,
-        "noUnusedLocals": true,
-        "noUnusedParameters": true,
-        "pretty": true,
-        "sourceMap": true,
-        "strict": true,
-        "target": "es2019"
-    },
-    "include": [
-        "src/**/*",
-        "types/**/*"
-    ],
-    "exclude": [
-        "dist",
-        "node_modules"
-    ]
+	"compilerOptions": {
+		"allowSyntheticDefaultImports": true,
+		"esModuleInterop": true,
+		"lib": ["es6"],
+		"module": "esnext",
+		"moduleResolution": "node",
+		"noEmit": true,
+		"noEmitOnError": false,
+		"noUnusedLocals": true,
+		"noUnusedParameters": true,
+		"pretty": true,
+		"sourceMap": true,
+		"strict": true,
+		"target": "es2019"
+	},
+	"include": ["src/**/*", "types/**/*"],
+	"exclude": ["dist", "node_modules"]
 }

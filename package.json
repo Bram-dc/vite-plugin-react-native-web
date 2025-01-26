@@ -44,6 +44,7 @@
         "flow-remove-types": "^2.233.0"
     },
     "devDependencies": {
+        "@biomejs/biome": "^1.9.4",
         "@rollup/plugin-typescript": "^11.1.6",
         "@types/node": "^20.12.4",
         "rollup": "^4.14.0",

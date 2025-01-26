@@ -1,10 +1,10 @@
-import { transformWithEsbuild } from 'vite'
-import flowRemoveTypes from 'flow-remove-types'
 import fs from 'node:fs/promises'
+import flowRemoveTypes from 'flow-remove-types'
+import { transformWithEsbuild } from 'vite'
 
-import type { Plugin as VitePlugin } from 'vite'
 import type { Plugin as ESBuildPlugin } from 'esbuild'
 import type { SourceMap } from 'rollup'
+import type { Plugin as VitePlugin } from 'vite'
 // import type { ViteReactNativeWebOptions } from '../types'
 
 const development = process.env.NODE_ENV === 'development'
@@ -47,11 +47,11 @@ const loaders = {
 const getLoader = (path: string) => {
 	const ext = `.${path.split('.').pop()}`
 
-    if (ext in loaders) {
-        return loaders[ext as keyof typeof loaders]
-    }
+	if (ext in loaders) {
+		return loaders[ext as keyof typeof loaders]
+	}
 
-    return 'default' as const
+	return 'default' as const
 }
 
 const esbuildPlugin = (): ESBuildPlugin => ({
