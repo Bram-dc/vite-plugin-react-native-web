@@ -24,6 +24,7 @@
     },
     "scripts": {
         "build": "rollup -c",
+        "lint": "biome check --write ./src ./types ./biome.json ./tsconfig.json ./rollup.config.mjs",
         "prerelease": "npm run build",
         "release": "npm publish"
     },
