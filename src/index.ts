@@ -57,10 +57,10 @@ const getLoader = (path: string) => {
 const esbuildPlugin = (): ESBuildPlugin => ({
 	name: 'react-native-web',
 	setup: (build) => {
-		// We need to manually resolve .web files since the resolveExtensions option does not seem to work properly.
 		build.onLoad({ filter: scriptPathPattern }, async (args) => {
 			let path = args.path
 
+			// We need to manually resolve .web files since the resolveExtensions option does not seem to work properly.
 			const webPath = args.path.replace(/(\.[^/.]+)$/, '.web$1')
 			try {
 				await fs.access(webPath)
