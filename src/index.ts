@@ -71,7 +71,8 @@ const esbuildPlugin = (): ESBuildPlugin => ({
 			const loader = getLoader(path)
 
 			if (nativeLegacyScriptPathPattern.test(path) && flowPragmaPattern.test(contents)) {
-				contents = flowRemoveTypes(contents).toString()
+				const transformed = flowRemoveTypes(contents)
+				contents = transformed.toString()
 			}
 
 			return {
@@ -111,11 +112,13 @@ const reactNativeWeb = (/*options: ViteReactNativeWebOptions = {}*/): VitePlugin
 			return
 		}
 
-		if (flowPragmaPattern.test(code)) {
-			code = flowRemoveTypes(code).toString()
-		}
-
 		let map: SourceMap | null = null
+
+		if (flowPragmaPattern.test(code)) {
+			const transformed = flowRemoveTypes(code)
+			code = transformed.toString()
+			map = transformed.generateMap()
+		}
 
 		if (jsxElementPattern.test(code) || jsxSelfClosingPattern.test(code) || jsxFragmentPattern.test(code)) {
 			const loader = getLoader(id)
