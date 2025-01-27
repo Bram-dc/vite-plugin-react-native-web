@@ -10,26 +10,37 @@ import type { Plugin as VitePlugin } from 'vite'
 const development = process.env.NODE_ENV === 'development'
 
 const extensions = [
+	// ⚠️ This currently does not work as expected (https://github.com/evanw/esbuild/issues/4053)
+	// '.web.mjs',
+	// '.mjs',
+	// '.web.js',
+	// '.js',
+	// '.web.mts',
+	// '.mts',
+	// '.web.ts',
+	// '.ts',
+	// '.web.jsx',
+	// '.jsx',
+	// '.web.tsx',
+	// '.tsx',
+	// '.json',
+
+	// ⚠️ Temporary fix
 	'.web.mjs',
-	'.mjs',
 	'.web.js',
-	'.js',
-
 	'.web.mts',
-	'.mts',
 	'.web.ts',
-	'.ts',
-
 	'.web.jsx',
-	'.jsx',
-
 	'.web.tsx',
+	'.mjs',
+	'.js',
+	'.mts',
+	'.ts',
+	'.jsx',
 	'.tsx',
-
 	'.json',
 ]
 
-const scriptPathPattern = /\.(js|jsx|ts|tsx|flow)$/
 const nativeLegacyScriptPathPattern = /\.(js|flow)$/
 
 const flowPragmaPattern = /@flow\b/
@@ -57,23 +68,15 @@ const getLoader = (path: string) => {
 const esbuildPlugin = (): ESBuildPlugin => ({
 	name: 'react-native-web',
 	setup: (build) => {
-		build.onLoad({ filter: scriptPathPattern }, async (args) => {
-			let path = args.path
+		build.onLoad({ filter: nativeLegacyScriptPathPattern }, async (args) => {
+			let contents = await fs.readFile(args.path, 'utf-8')
 
-			// We need to manually resolve .web files since the resolveExtensions option does not seem to work properly.
-			const webPath = args.path.replace(/(\.[^/.]+)$/, '.web$1')
-			try {
-				await fs.access(webPath)
-				path = webPath
-			} catch {}
-
-			let contents = await fs.readFile(path, 'utf-8')
-			const loader = getLoader(path)
-
-			if (nativeLegacyScriptPathPattern.test(path) && flowPragmaPattern.test(contents)) {
+			if (nativeLegacyScriptPathPattern.test(args.path) && flowPragmaPattern.test(contents)) {
 				const transformed = flowRemoveTypes(contents)
 				contents = transformed.toString()
 			}
+
+			const loader = getLoader(args.path)
 
 			return {
 				contents,
@@ -117,7 +120,11 @@ const reactNativeWeb = (/*options: ViteReactNativeWebOptions = {}*/): VitePlugin
 		if (flowPragmaPattern.test(code)) {
 			const transformed = flowRemoveTypes(code)
 			code = transformed.toString()
-			map = transformed.generateMap()
+			map = {
+				file: id,
+				toUrl: () => id,
+				...transformed.generateMap(),
+			}
 		}
 
 		if (jsxElementPattern.test(code) || jsxSelfClosingPattern.test(code) || jsxFragmentPattern.test(code)) {
