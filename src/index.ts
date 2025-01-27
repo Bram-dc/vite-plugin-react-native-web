@@ -41,7 +41,8 @@ const extensions = [
 	'.json',
 ]
 
-const nativeLegacyScriptPathPattern = /\.(js|flow)$/
+const reactNativeFlowJsxPathPattern = /\.(js|flow)$/
+const reactNativeFlowJsxLoader = 'jsx'
 
 const flowPragmaPattern = /@flow\b/
 const useClientPragmaPattern = /['"]use client['"]/
@@ -50,25 +51,10 @@ const jsxElementPattern = /<([A-Za-z][A-Za-z0-9]*)\b[^>]*>([\s\S]*?)<\/\1>/
 const jsxSelfClosingPattern = /<([A-Za-z][A-Za-z0-9]*)\b[^>]*\/?>/
 const jsxFragmentPattern = /<>([\s\S]*?)<\/>/
 
-const loaders = {
-	'.js': 'jsx',
-	'.flow': 'jsx',
-} as const
-
-const getLoader = (path: string) => {
-	const ext = `.${path.split('.').pop()}`
-
-	if (ext in loaders) {
-		return loaders[ext as keyof typeof loaders]
-	}
-
-	return 'default' as const
-}
-
 const esbuildPlugin = (): ESBuildPlugin => ({
 	name: 'react-native-web',
 	setup: (build) => {
-		build.onLoad({ filter: nativeLegacyScriptPathPattern }, async (args) => {
+		build.onLoad({ filter: reactNativeFlowJsxPathPattern }, async (args) => {
 			let contents = await fs.readFile(args.path, 'utf-8')
 
 			if (flowPragmaPattern.test(contents)) {
@@ -76,11 +62,9 @@ const esbuildPlugin = (): ESBuildPlugin => ({
 				contents = transformed.toString()
 			}
 
-			const loader = getLoader(args.path)
-
 			return {
 				contents,
-				loader,
+				loader: reactNativeFlowJsxLoader,
 			}
 		})
 	},
@@ -111,7 +95,7 @@ const reactNativeWeb = (/*options: ViteReactNativeWebOptions = {}*/): VitePlugin
 	async transform(code, id) {
 		id = id.split('?')[0]
 
-		if (!nativeLegacyScriptPathPattern.test(id)) {
+		if (!reactNativeFlowJsxPathPattern.test(id)) {
 			return
 		}
 
@@ -128,10 +112,8 @@ const reactNativeWeb = (/*options: ViteReactNativeWebOptions = {}*/): VitePlugin
 		}
 
 		if (jsxElementPattern.test(code) || jsxSelfClosingPattern.test(code) || jsxFragmentPattern.test(code)) {
-			const loader = getLoader(id)
-
 			const result = await transformWithEsbuild(code, id, {
-				loader,
+				loader: reactNativeFlowJsxLoader,
 				tsconfigRaw: {
 					compilerOptions: {
 						jsx: 'react-jsx',
