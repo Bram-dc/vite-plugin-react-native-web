@@ -71,7 +71,7 @@ const esbuildPlugin = (): ESBuildPlugin => ({
 		build.onLoad({ filter: nativeLegacyScriptPathPattern }, async (args) => {
 			let contents = await fs.readFile(args.path, 'utf-8')
 
-			if (nativeLegacyScriptPathPattern.test(args.path) && flowPragmaPattern.test(contents)) {
+			if (flowPragmaPattern.test(contents)) {
 				const transformed = flowRemoveTypes(contents)
 				contents = transformed.toString()
 			}
