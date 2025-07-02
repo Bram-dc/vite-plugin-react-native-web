@@ -7,6 +7,10 @@ import type { SourceMap } from 'rollup'
 import type { Plugin as VitePlugin } from 'vite'
 // import type { ViteReactNativeWebOptions } from '../types'
 
+type ViteReactNativeWebOptions = {
+	transformJsx?: boolean
+}
+
 const development = process.env.NODE_ENV === 'development'
 
 const extensions = [
@@ -70,7 +74,7 @@ const esbuildPlugin = (): ESBuildPlugin => ({
 	},
 })
 
-const reactNativeWeb = (/*options: ViteReactNativeWebOptions = {}*/): VitePlugin => ({
+const reactNativeWeb = (options: ViteReactNativeWebOptions = {}): VitePlugin => ({
 	enforce: 'pre',
 	name: 'react-native-web',
 
@@ -111,7 +115,12 @@ const reactNativeWeb = (/*options: ViteReactNativeWebOptions = {}*/): VitePlugin
 			}
 		}
 
-		if (jsxElementPattern.test(code) || jsxSelfClosingPattern.test(code) || jsxFragmentPattern.test(code)) {
+		const shouldTransformJsx = options.transformJsx !== false
+
+		if (
+			shouldTransformJsx &&
+			(jsxElementPattern.test(code) || jsxSelfClosingPattern.test(code) || jsxFragmentPattern.test(code))
+		) {
 			const result = await transformWithEsbuild(code, id, {
 				loader: reactNativeFlowJsxLoader,
 				tsconfigRaw: {
