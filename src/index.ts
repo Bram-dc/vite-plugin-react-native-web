@@ -80,8 +80,10 @@ const reactNativeWeb = (/*options: ViteReactNativeWebOptions = {}*/): VitePlugin
 			__DEV__: JSON.stringify(development),
 			'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV),
 		},
-		commonjsOptions: {
-			transformMixedEsModules: true,
+		build: {
+			commonjsOptions: {
+				transformMixedEsModules: true,
+			},
 		},
 		resolve: {
 			extensions,
