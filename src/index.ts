@@ -80,6 +80,9 @@ const reactNativeWeb = (/*options: ViteReactNativeWebOptions = {}*/): VitePlugin
 			__DEV__: JSON.stringify(development),
 			'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV),
 		},
+		commonjsOptions: {
+			transformMixedEsModules: true,
+		},
 		resolve: {
 			extensions,
 			alias: [{ find: 'react-native', replacement: 'react-native-web' }],
