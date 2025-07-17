@@ -1,57 +1,57 @@
 {
-    "name": "vite-plugin-react-native-web",
-    "version": "2.1.1",
-    "publishConfig": {
-        "access": "public"
-    },
-    "description": "React Native Web support for Vite",
-    "license": "MIT",
-    "repository": {
-        "url": "git+https://github.com/Bram-dc/vite-plugin-react-native-web.git"
-    },
-    "author": "Bram del Canho",
-    "homepage": "https://github.com/Bram-dc/vite-plugin-react-native-web#readme",
-    "bugs": "https://github.com/Bram-dc/vite-plugin-react-native-web/issues",
-    "main": "./dist/cjs/index.js",
-    "module": "./dist/es/index.js",
-    "exports": {
-        "types": "./types/index.d.ts",
-        "import": "./dist/es/index.js",
-        "default": "./dist/cjs/index.js"
-    },
-    "engines": {
-        "node": ">=14.0.0"
-    },
-    "scripts": {
-        "build": "rollup -c",
-        "lint": "biome check --write ./src ./types ./biome.json ./tsconfig.json ./rollup.config.mjs",
-        "prerelease": "npm run build",
-        "release": "npm publish"
-    },
-    "files": [
-        "dist",
-        "!dist/**/*.map",
-        "types",
-        "README.md"
-    ],
-    "keywords": [
-        "vite",
-        "vite-plugin",
-        "plugin",
-        "react-native",
-        "react-native-web"
-    ],
-    "dependencies": {
-        "flow-remove-types": "^2.275.0"
-    },
-    "devDependencies": {
-        "@biomejs/biome": "^2.1.1",
-        "@rollup/plugin-typescript": "^12.1.4",
-        "@types/node": "^24.0.14",
-        "rollup": "^4.45.1",
-        "tslib": "^2.8.1",
-        "typescript": "^5.8.3",
-        "vite": "^7.0.4"
-    },
-    "types": "./types/index.d.ts"
+	"name": "vite-plugin-react-native-web",
+	"version": "2.2.0",
+	"publishConfig": {
+		"access": "public"
+	},
+	"description": "React Native Web support for Vite",
+	"license": "MIT",
+	"repository": {
+		"url": "git+https://github.com/Bram-dc/vite-plugin-react-native-web.git"
+	},
+	"author": "Bram del Canho",
+	"homepage": "https://github.com/Bram-dc/vite-plugin-react-native-web#readme",
+	"bugs": "https://github.com/Bram-dc/vite-plugin-react-native-web/issues",
+	"main": "./dist/cjs/index.js",
+	"module": "./dist/es/index.js",
+	"exports": {
+		"types": "./types/index.d.ts",
+		"import": "./dist/es/index.js",
+		"default": "./dist/cjs/index.js"
+	},
+	"engines": {
+		"node": ">=14.0.0"
+	},
+	"scripts": {
+		"build": "rollup -c",
+		"lint": "biome check --write ./src ./types ./biome.json ./tsconfig.json ./rollup.config.mjs",
+		"prerelease": "npm run build",
+		"release": "npm publish"
+	},
+	"files": [
+		"dist",
+		"!dist/**/*.map",
+		"types",
+		"README.md"
+	],
+	"keywords": [
+		"vite",
+		"vite-plugin",
+		"plugin",
+		"react-native",
+		"react-native-web"
+	],
+	"dependencies": {
+		"flow-remove-types": "^2.275.0"
+	},
+	"devDependencies": {
+		"@biomejs/biome": "^2.1.1",
+		"@rollup/plugin-typescript": "^12.1.4",
+		"@types/node": "^24.0.14",
+		"rollup": "^4.45.1",
+		"tslib": "^2.8.1",
+		"typescript": "^5.8.3",
+		"vite": "^7.0.4"
+	},
+	"types": "./types/index.d.ts"
 }
