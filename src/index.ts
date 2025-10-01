@@ -79,6 +79,7 @@ const reactNativeWeb = (/*options: ViteReactNativeWebOptions = {}*/): VitePlugin
 			global: 'self',
 			__DEV__: JSON.stringify(development),
 			'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV),
+			'process.env.EXPO_OS': JSON.stringify('web'),
 		},
 		build: {
 			commonjsOptions: {
