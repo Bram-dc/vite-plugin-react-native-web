@@ -82,6 +82,7 @@ const reactNativeWeb = (/*options: ViteReactNativeWebOptions = {}*/): VitePlugin
 		},
 		build: {
 			commonjsOptions: {
+				extensions,
 				transformMixedEsModules: true,
 			},
 		},
