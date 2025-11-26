@@ -18,21 +18,33 @@ npm i vite-plugin-react-native-web -D
 import reactNativeWeb from "vite-plugin-react-native-web";
 
 export default defineConfig({
-  plugins: [
-    reactNativeWeb()
-  ]
+  plugins: [reactNativeWeb({ ... })],
 });
 ```
+
+## Options
+
+The plugin accepts an options object with the following optional properties:
+
+- `enableExpoManualChunk` (boolean): When set to true, this option enables manual chunking for expo-modules-core modules to optimize bundle size and loading performance. Default is true.
 
 If you are getting errors please report them in the issues section.
 
 The following variables are defined in the transformed files: (inferred during Vite's build process)
+
 - `global` as `self`
 - `__DEV__` as `process.env.NODE_ENV === 'development'`
 - `process.env.NODE_ENV` as `process.env.NODE_ENV`
+- `process.env.EXPO_OS` as `"web"`
 
 ## Contributing
+
 Please feel free to contribute to this project. Just fork it and submit a PR.
 
 ## License
+
 MIT
+
+```
+
+```

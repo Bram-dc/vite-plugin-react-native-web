@@ -5,7 +5,7 @@ import type { SourceMap } from 'rollup'
 import type { Plugin as VitePlugin } from 'vite'
 import { transformWithEsbuild } from 'vite'
 
-// import type { ViteReactNativeWebOptions } from '../types'
+import type { ViteReactNativeWebOptions } from '../types'
 
 const development = process.env.NODE_ENV === 'development'
 
@@ -70,7 +70,7 @@ const esbuildPlugin = (): ESBuildPlugin => ({
 	},
 })
 
-const reactNativeWeb = (/*options: ViteReactNativeWebOptions = {}*/): VitePlugin => ({
+const reactNativeWeb = (options?: ViteReactNativeWebOptions): VitePlugin => ({
 	enforce: 'pre',
 	name: 'react-native-web',
 
@@ -86,6 +86,25 @@ const reactNativeWeb = (/*options: ViteReactNativeWebOptions = {}*/): VitePlugin
 				extensions,
 				transformMixedEsModules: true,
 			},
+			rollupOptions:
+				options?.enableExpoManualChunk !== false
+					? {
+							output: {
+								manualChunks(id) {
+									if (id.includes('expo-modules-core')) {
+										return 'expo-modules-core'
+									}
+								},
+
+								entryFileNames: (chunk) => {
+									if (chunk.name === 'expo-modules-core') {
+										return '0-expo-modules-core.js'
+									}
+									return '[name].js'
+								},
+							},
+						}
+					: undefined,
 		},
 		resolve: {
 			extensions,
