@@ -10,33 +10,17 @@ import type { ViteReactNativeWebOptions } from '../types'
 const development = process.env.NODE_ENV === 'development'
 
 const extensions = [
-	// ⚠️ This currently does not work as expected (https://github.com/evanw/esbuild/issues/4053)
-	// '.web.mjs',
-	// '.mjs',
-	// '.web.js',
-	// '.js',
-	// '.web.mts',
-	// '.mts',
-	// '.web.ts',
-	// '.ts',
-	// '.web.jsx',
-	// '.jsx',
-	// '.web.tsx',
-	// '.tsx',
-	// '.json',
-
-	// ⚠️ Temporary fix
 	'.web.mjs',
-	'.web.js',
-	'.web.mts',
-	'.web.ts',
-	'.web.jsx',
-	'.web.tsx',
 	'.mjs',
+	'.web.js',
 	'.js',
+	'.web.mts',
 	'.mts',
+	'.web.ts',
 	'.ts',
+	'.web.jsx',
 	'.jsx',
+	'.web.tsx',
 	'.tsx',
 	'.json',
 ]
@@ -45,11 +29,6 @@ const reactNativeFlowJsxPathPattern = /\.(js|flow)$/
 const reactNativeFlowJsxLoader = 'jsx'
 
 const flowPragmaPattern = /@flow\b/
-const useClientPragmaPattern = /['"]use client['"]/
-
-const jsxElementPattern = /<([A-Za-z][A-Za-z0-9]*)\b[^>]*>([\s\S]*?)<\/\1>/
-const jsxSelfClosingPattern = /<([A-Za-z][A-Za-z0-9]*)\b[^>]*\/?>/
-const jsxFragmentPattern = /<>([\s\S]*?)<\/>/
 
 const esbuildPlugin = (): ESBuildPlugin => ({
 	name: 'react-native-web',
@@ -127,34 +106,20 @@ const reactNativeWeb = (options?: ViteReactNativeWebOptions): VitePlugin => ({
 
 		let map: SourceMap | null = null
 
-		if (flowPragmaPattern.test(code)) {
-			const transformed = flowRemoveTypes(code)
-			code = transformed.toString()
-			map = {
-				file: id,
-				toUrl: () => id,
-				...transformed.generateMap(),
-			}
+		const transformed = flowRemoveTypes(code)
+		code = transformed.toString()
+		map = {
+			file: id,
+			toUrl: () => id,
+			...transformed.generateMap(),
 		}
 
-		if (jsxElementPattern.test(code) || jsxSelfClosingPattern.test(code) || jsxFragmentPattern.test(code)) {
-			const result = await transformWithEsbuild(code, id, {
-				loader: reactNativeFlowJsxLoader,
-				tsconfigRaw: {
-					compilerOptions: {
-						jsx: 'react-jsx',
-					},
-				},
-			})
-
-			code = result.code
-			map = result.map
-
-			// Do not include source maps for files that are using 'use client' pragma since these break the esbuild mappings (https://github.com/vitejs/vite/issues/15012)
-			if (useClientPragmaPattern.test(code)) {
-				map = null
-			}
-		}
+		const result = await transformWithEsbuild(code, id, {
+			loader: reactNativeFlowJsxLoader,
+			jsx: 'automatic',
+		})
+		code = result.code
+		map = result.map
 
 		return { code, map }
 	},
