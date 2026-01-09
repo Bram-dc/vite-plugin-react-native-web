@@ -32,7 +32,7 @@ If you are getting errors please report them in the issues section.
 
 The following variables are defined in the transformed files: (inferred during Vite's build process)
 
-- `global` as `self`
+- `global` as `globalThis`
 - `__DEV__` as `process.env.NODE_ENV === 'development'`
 - `process.env.NODE_ENV` as `process.env.NODE_ENV`
 - `process.env.EXPO_OS` as `"web"`

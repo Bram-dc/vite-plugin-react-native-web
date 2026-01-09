@@ -76,7 +76,7 @@ const reactNativeWeb = (options?: ViteReactNativeWebOptions): VitePlugin => ({
 
 	config: () => ({
 		define: {
-			global: 'self',
+			global: 'globalThis',
 			__DEV__: JSON.stringify(development),
 			'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV),
 			'process.env.EXPO_OS': JSON.stringify('web'),
