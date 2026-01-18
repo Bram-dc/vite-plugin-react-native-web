@@ -1,8 +1,8 @@
 :root {
-  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
+	font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
 
-  color-scheme: light dark;
-  background-color: #242424;
+	color-scheme: light dark;
+	background-color: #242424;
 }
 
 * {
@@ -30,4 +30,3 @@ body {
 	margin: 0;
 	overflow: hidden;
 }
-
