@@ -65,25 +65,24 @@ const reactNativeWeb = (options?: ViteReactNativeWebOptions): VitePlugin => ({
 				extensions,
 				transformMixedEsModules: true,
 			},
-			rollupOptions:
-				options?.enableExpoManualChunk !== false
-					? {
-							output: {
-								manualChunks(id) {
-									if (id.includes('expo-modules-core')) {
-										return 'expo-modules-core'
-									}
-								},
-
-								entryFileNames: (chunk) => {
-									if (chunk.name === 'expo-modules-core') {
-										return '0-expo-modules-core.js'
-									}
-									return '[name].js'
-								},
+			rollupOptions: options?.enableExpoManualChunk
+				? {
+						output: {
+							manualChunks(id) {
+								if (id.includes('expo-modules-core')) {
+									return 'expo-modules-core'
+								}
 							},
-						}
-					: undefined,
+
+							entryFileNames: (chunk) => {
+								if (chunk.name === 'expo-modules-core') {
+									return '0-expo-modules-core.js'
+								}
+								return '[name].js'
+							},
+						},
+					}
+				: undefined,
 		},
 		resolve: {
 			extensions,

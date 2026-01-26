@@ -26,7 +26,7 @@ export default defineConfig({
 
 The plugin accepts an options object with the following optional properties:
 
-- `enableExpoManualChunk` (boolean): When set to true, this option enables manual chunking for expo-modules-core modules to optimize bundle size and loading performance. Default is true.
+- `enableExpoManualChunk` (boolean): When set to true, this option enables manual chunking for expo-modules-core modules to optimize bundle size and loading performance. Default is false. Be cautious when enabling this option, since it overrides user-defined manual chunks in the Vite configuration.
 
 If you are getting errors please report them in the issues section.
 
