@@ -1,0 +1,28 @@
+{
+	"name": "expo-example",
+	"private": true,
+	"version": "0.0.0",
+	"type": "module",
+	"scripts": {
+		"dev": "vite",
+		"build": "tsc -b && vite build",
+		"preview": "vite preview"
+	},
+	"dependencies": {
+		"expo": "^54.0.33",
+		"expo-image": "~3.0.11",
+		"react": "^19.2.0",
+		"react-dom": "^19.2.0",
+		"react-native": "^0.83.1",
+		"react-native-web": "^0.21.2"
+	},
+	"devDependencies": {
+		"@types/node": "^24.10.1",
+		"@types/react": "^19.2.5",
+		"@types/react-dom": "^19.2.3",
+		"@vitejs/plugin-react-swc": "^4.2.2",
+		"typescript": "~5.9.3",
+		"vite": "^7.2.4",
+		"vite-plugin-react-native-web": "^2.6.0"
+	}
+}

@@ -1,0 +1,32 @@
+:root {
+	font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
+
+	color-scheme: light dark;
+	background-color: #242424;
+}
+
+* {
+	touch-action: initial;
+	-webkit-font-smoothing: antialiased;
+}
+
+html::-webkit-scrollbar {
+	display: none;
+}
+
+html {
+	-ms-overflow-style: none;
+	scrollbar-width: none;
+}
+
+#root {
+	display: flex;
+	width: 100vw;
+	height: 100vh;
+	overflow: hidden;
+}
+
+body {
+	margin: 0;
+	overflow: hidden;
+}
