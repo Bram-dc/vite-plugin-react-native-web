@@ -21,6 +21,6 @@
 		"@vitejs/plugin-react-swc": "^4.2.2",
 		"typescript": "~5.9.3",
 		"vite": "^7.2.4",
-		"vite-plugin-react-native-web": "^2.6.0"
+		"vite-plugin-react-native-web": "^2.7.1"
 	}
 }
