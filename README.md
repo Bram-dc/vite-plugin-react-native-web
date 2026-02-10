@@ -32,8 +32,8 @@ export default defineConfig({
     rollupOptions: {
       output: {
         manualChunks(id) {
-          if (id.includes('expo-modules-core')) {
-            return 'expo-modules-core'
+          if (id.includes("expo-modules-core")) {
+            return "expo-modules-core";
           }
 
           // Add your other manual chunk configurations here
@@ -41,19 +41,20 @@ export default defineConfig({
         },
 
         entryFileNames: (chunk) => {
-          if (chunk.name === 'expo-modules-core') {
-            return '0-expo-modules-core.js'
+          if (chunk.name === "expo-modules-core") {
+            return "0-expo-modules-core.js";
           }
 
           // Add your other entry file name configurations here
           // ...
 
-          return '[name].js'
+          return "[name].js";
         },
       },
     },
   },
 });
+```
 
 ## Options
 
@@ -77,6 +78,8 @@ Please feel free to contribute to this project. Just fork it and submit a PR.
 ## License
 
 MIT
+
+```
 
 ```
 
