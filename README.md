@@ -71,6 +71,11 @@ The following variables are defined in the transformed files: (inferred during V
 - `process.env.NODE_ENV` as `process.env.NODE_ENV`
 - `process.env.EXPO_OS` as `"web"`
 
+## Examples
+
+- [React + TypeScript + Vite + React Native Web Example](./apps/example)
+- [React + TypeScript + Expo + Vite + React Native Web Example](./apps/expo-example)
+
 ## Contributing
 
 Please feel free to contribute to this project. Just fork it and submit a PR.
