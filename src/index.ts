@@ -32,6 +32,7 @@ const optimizeDepsInclude = [
 	'expo',
 	'expo-modules-core',
 	'react-native',
+	'react-native-web',
 ]
 
 const reactNativeWeb = (_options?: ViteReactNativeWebOptions): VitePlugin => ({
