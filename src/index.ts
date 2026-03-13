@@ -38,14 +38,14 @@ const rolldownPlugin = (): RolldownPlugin => ({
 			code = transformed.toString()
 
 			const result = await transformWithOxc(code, id, {
-				lang: 'jsx',
+				lang: 'tsx',
 				// loader: reactNativeFlowJsxLoader,
 				// jsx: 'automatic',
 			})
 
 			return {
 				...result,
-				moduleType: 'jsx',
+				moduleType: 'tsx',
 			}
 		},
 	},
