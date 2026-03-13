@@ -1,9 +1,9 @@
 import typescript from '@rollup/plugin-typescript'
+import { defineConfig } from 'rolldown'
 
-export default {
+export default defineConfig({
 	input: 'src/index.ts',
 	external: ['flow-remove-types'],
-	strictDeprecations: true,
 	output: [
 		{
 			format: 'cjs',
@@ -30,5 +30,6 @@ export default {
 			sourcemap: true,
 		},
 	],
+
 	plugins: [typescript()],
-}
+})

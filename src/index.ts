@@ -1,7 +1,5 @@
-import fs from 'node:fs/promises'
-import type { Plugin as ESBuildPlugin } from 'esbuild'
 import flowRemoveTypes from 'flow-remove-types'
-import type { SourceMap } from 'rollup'
+import type { RolldownPlugin, SourceMap } from 'rolldown'
 import type { Plugin as VitePlugin } from 'vite'
 import { transformWithEsbuild } from 'vite'
 
@@ -30,22 +28,34 @@ const reactNativeFlowJsxLoader = 'jsx'
 
 const flowPragmaPattern = /@flow\b/
 
-const esbuildPlugin = (): ESBuildPlugin => ({
+const rolldownPlugin = (): RolldownPlugin => ({
 	name: 'react-native-web',
-	setup: (build) => {
-		build.onLoad({ filter: reactNativeFlowJsxPathPattern }, async (args) => {
-			let contents = await fs.readFile(args.path, 'utf-8')
+	transform: {
+		filter: {
+			id: reactNativeFlowJsxPathPattern,
+			code: flowPragmaPattern,
+		},
+		handler: async (code, id) => {
+			let map: SourceMap | null = null
 
-			if (flowPragmaPattern.test(contents)) {
-				const transformed = flowRemoveTypes(contents)
-				contents = transformed.toString()
+			const transformed = flowRemoveTypes(code)
+			code = transformed.toString()
+			map = {
+				file: id,
+				toUrl: () => id,
+				sourcesContent: [code],
+				...transformed.generateMap(),
 			}
 
-			return {
-				contents,
+			const result = await transformWithEsbuild(code, id, {
 				loader: reactNativeFlowJsxLoader,
-			}
-		})
+				jsx: 'automatic',
+			})
+			code = result.code
+			map = result.map
+
+			return { code, map }
+		},
 	},
 })
 
@@ -67,21 +77,21 @@ const reactNativeWeb = (options?: ViteReactNativeWebOptions): VitePlugin => ({
 			},
 			rollupOptions: options?.enableExpoManualChunk
 				? {
-						output: {
-							manualChunks(id) {
-								if (id.includes('expo-modules-core')) {
-									return 'expo-modules-core'
-								}
-							},
-
-							entryFileNames: (chunk) => {
-								if (chunk.name === 'expo-modules-core') {
-									return '0-expo-modules-core.js'
-								}
-								return '[name].js'
-							},
+					output: {
+						manualChunks(id) {
+							if (id.includes('expo-modules-core')) {
+								return 'expo-modules-core'
+							}
 						},
-					}
+
+						entryFileNames: (chunk) => {
+							if (chunk.name === 'expo-modules-core') {
+								return '0-expo-modules-core.js'
+							}
+							return '[name].js'
+						},
+					},
+				}
 				: undefined,
 		},
 		resolve: {
@@ -89,8 +99,8 @@ const reactNativeWeb = (options?: ViteReactNativeWebOptions): VitePlugin => ({
 			alias: [{ find: 'react-native', replacement: 'react-native-web' }],
 		},
 		optimizeDeps: {
-			esbuildOptions: {
-				plugins: [esbuildPlugin()],
+			rolldownOptions: {
+				plugins: [rolldownPlugin()],
 				resolveExtensions: extensions,
 			},
 		},
@@ -110,6 +120,7 @@ const reactNativeWeb = (options?: ViteReactNativeWebOptions): VitePlugin => ({
 		map = {
 			file: id,
 			toUrl: () => id,
+			sourcesContent: [code],
 			...transformed.generateMap(),
 		}
 
