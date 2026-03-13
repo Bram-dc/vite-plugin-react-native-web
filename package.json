@@ -1,6 +1,7 @@
 {
 	"name": "vite-plugin-react-native-web",
 	"version": "2.7.1",
+	"type": "module",
 	"publishConfig": {
 		"access": "public"
 	},

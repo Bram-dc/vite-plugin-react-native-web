@@ -3,30 +3,17 @@ import { defineConfig } from 'rolldown'
 
 export default defineConfig({
 	input: 'src/index.ts',
-	external: ['flow-remove-types'],
+	external: ['flow-remove-types', 'vite'],
 	output: [
 		{
 			format: 'cjs',
-			file: './dist/cjs/index.js',
+			dir: './dist/cjs',
 			exports: 'named',
-			footer: 'module.exports = Object.assign(exports.default, exports);',
 			sourcemap: true,
 		},
 		{
 			format: 'es',
-			file: './dist/es/index.js',
-			plugins: [
-				{
-					name: 'emit-module-package-file',
-					generateBundle() {
-						this.emitFile({
-							type: 'asset',
-							fileName: 'package.json',
-							source: `{"type":"module"}`,
-						})
-					},
-				},
-			],
+			dir: './dist/es',
 			sourcemap: true,
 		},
 	],
