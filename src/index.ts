@@ -1,11 +1,9 @@
-import fs from 'node:fs/promises'
-import type { Plugin as ESBuildPlugin } from 'esbuild'
-import flowRemoveTypes from 'flow-remove-types'
-import type { SourceMap } from 'rollup'
 import type { Plugin as VitePlugin } from 'vite'
-import { transformWithEsbuild } from 'vite'
 
 import type { ViteReactNativeWebOptions } from '../types'
+import { flowRemoveTypesPlugin } from './plugins/flow-remove-types-plugin'
+import { treeshakeFixPlugin } from './plugins/treeshake-fix-plugin'
+import { typeExportsFixPlugin } from './plugins/type-exports-fix'
 
 const development = process.env.NODE_ENV === 'development'
 
@@ -25,31 +23,18 @@ const extensions = [
 	'.json',
 ]
 
-const reactNativeFlowJsxPathPattern = /\.(js|flow)$/
-const reactNativeFlowJsxLoader = 'jsx'
+const moduleTypes = {
+	'.js': 'jsx',
+	'.flow': 'jsx',
+} as const
 
-const flowPragmaPattern = /@flow\b/
+const optimizeDepsInclude = [
+	'expo',
+	'expo-modules-core',
+	'react-native',
+]
 
-const esbuildPlugin = (): ESBuildPlugin => ({
-	name: 'react-native-web',
-	setup: (build) => {
-		build.onLoad({ filter: reactNativeFlowJsxPathPattern }, async (args) => {
-			let contents = await fs.readFile(args.path, 'utf-8')
-
-			if (flowPragmaPattern.test(contents)) {
-				const transformed = flowRemoveTypes(contents)
-				contents = transformed.toString()
-			}
-
-			return {
-				contents,
-				loader: reactNativeFlowJsxLoader,
-			}
-		})
-	},
-})
-
-const reactNativeWeb = (options?: ViteReactNativeWebOptions): VitePlugin => ({
+const reactNativeWeb = (_options?: ViteReactNativeWebOptions): VitePlugin => ({
 	enforce: 'pre',
 	name: 'react-native-web',
 
@@ -60,68 +45,30 @@ const reactNativeWeb = (options?: ViteReactNativeWebOptions): VitePlugin => ({
 			'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV),
 			'process.env.EXPO_OS': JSON.stringify('web'),
 		},
-		build: {
-			commonjsOptions: {
-				extensions,
-				transformMixedEsModules: true,
-			},
-			rollupOptions: options?.enableExpoManualChunk
-				? {
-						output: {
-							manualChunks(id) {
-								if (id.includes('expo-modules-core')) {
-									return 'expo-modules-core'
-								}
-							},
-
-							entryFileNames: (chunk) => {
-								if (chunk.name === 'expo-modules-core') {
-									return '0-expo-modules-core.js'
-								}
-								return '[name].js'
-							},
-						},
-					}
-				: undefined,
-		},
 		resolve: {
 			extensions,
 			alias: [{ find: 'react-native', replacement: 'react-native-web' }],
 		},
+		build: {
+			rolldownOptions: {
+				resolve: {
+					extensions,
+				},
+				moduleTypes,
+				plugins: [flowRemoveTypesPlugin(), treeshakeFixPlugin(), typeExportsFixPlugin()],
+			},
+		},
 		optimizeDeps: {
-			esbuildOptions: {
-				plugins: [esbuildPlugin()],
-				resolveExtensions: extensions,
+			include: optimizeDepsInclude,
+			rolldownOptions: {
+				resolve: {
+					extensions,
+				},
+				moduleTypes,
+				plugins: [flowRemoveTypesPlugin(), treeshakeFixPlugin(), typeExportsFixPlugin()],
 			},
 		},
 	}),
-
-	async transform(code, id) {
-		id = id.split('?')[0]
-
-		if (!reactNativeFlowJsxPathPattern.test(id)) {
-			return
-		}
-
-		let map: SourceMap | null = null
-
-		const transformed = flowRemoveTypes(code)
-		code = transformed.toString()
-		map = {
-			file: id,
-			toUrl: () => id,
-			...transformed.generateMap(),
-		}
-
-		const result = await transformWithEsbuild(code, id, {
-			loader: reactNativeFlowJsxLoader,
-			jsx: 'automatic',
-		})
-		code = result.code
-		map = result.map
-
-		return { code, map }
-	},
 })
 
 export default reactNativeWeb

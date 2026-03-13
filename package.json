@@ -1,6 +1,7 @@
 {
 	"name": "vite-plugin-react-native-web",
-	"version": "2.7.1",
+	"version": "3.0.0-rc.1",
+	"type": "module",
 	"publishConfig": {
 		"access": "public"
 	},
@@ -23,7 +24,7 @@
 		"node": ">=14.0.0"
 	},
 	"scripts": {
-		"build": "rollup -c",
+		"build": "rolldown -c rolldown.config.ts",
 		"lint": "biome check --write",
 		"prerelease": "npm run build",
 		"release": "npm publish"
@@ -42,16 +43,16 @@
 		"react-native-web"
 	],
 	"dependencies": {
-		"flow-remove-types": "^2.275.0"
+		"flow-remove-types": "^2.304.0"
 	},
 	"devDependencies": {
-		"@biomejs/biome": "^2.1.1",
-		"@rollup/plugin-typescript": "^12.1.4",
-		"@types/node": "^24.0.14",
-		"rollup": "^4.45.1",
+		"@biomejs/biome": "^2.4.6",
+		"@rollup/plugin-typescript": "^12.3.0",
+		"@types/node": "^25.5.0",
+		"rolldown": "^1.0.0-rc.9",
 		"tslib": "^2.8.1",
-		"typescript": "^5.8.3",
-		"vite": "^7.0.4"
+		"typescript": "^5.9.3",
+		"vite": "^8.0.0"
 	},
 	"types": "./types/index.d.ts"
 }
