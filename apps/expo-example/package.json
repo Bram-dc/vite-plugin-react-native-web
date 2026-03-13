@@ -9,20 +9,20 @@
 		"preview": "vite preview"
 	},
 	"dependencies": {
-		"expo": "^54.0.33",
-		"expo-image": "~3.0.11",
-		"react": "19.1.0",
-		"react-dom": "19.1.0",
-		"react-native": "0.81.5",
+		"expo": "^55.0.6",
+		"expo-image": "~55.0.6",
+		"react": "19.2.4",
+		"react-dom": "19.2.4",
+		"react-native": "0.84.1",
 		"react-native-web": "^0.21.2"
 	},
 	"devDependencies": {
-		"@types/node": "^24.10.1",
-		"@types/react": "^19.2.5",
+		"@types/node": "^25.5.0",
+		"@types/react": "^19.2.14",
 		"@types/react-dom": "^19.2.3",
-		"@vitejs/plugin-react-swc": "^4.2.2",
+		"@vitejs/plugin-react": "^6.0.1",
 		"typescript": "~5.9.3",
-		"vite": "^7.2.4",
+		"vite": "^8.0.0",
 		"vite-plugin-react-native-web": "^2.7.1"
 	}
 }
