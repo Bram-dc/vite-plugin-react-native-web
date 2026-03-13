@@ -5,7 +5,8 @@ export const typeExportsFixPlugin = (): RolldownPlugin => ({
 	load: {
 		filter: { id: /expo-modules-core.*ts-declarations.*\.ts$/ },
 		handler: () => ({
-			code: 'export {}', moduleType: 'js'
+			code: 'export {}',
+			moduleType: 'js',
 		}),
 	},
 })

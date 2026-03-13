@@ -28,6 +28,12 @@ const moduleTypes = {
 	'.flow': 'jsx',
 } as const
 
+const optimizeDepsInclude = [
+	'expo',
+	'expo-modules-core',
+	'react-native',
+]
+
 const reactNativeWeb = (_options?: ViteReactNativeWebOptions): VitePlugin => ({
 	enforce: 'pre',
 	name: 'react-native-web',
@@ -53,6 +59,7 @@ const reactNativeWeb = (_options?: ViteReactNativeWebOptions): VitePlugin => ({
 			},
 		},
 		optimizeDeps: {
+			include: optimizeDepsInclude,
 			rolldownOptions: {
 				resolve: {
 					extensions,
