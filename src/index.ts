@@ -29,9 +29,6 @@ const moduleTypes = {
 } as const
 
 const optimizeDepsInclude = [
-	'expo',
-	'expo-modules-core',
-	'react-native',
 	'react-native-web',
 ]
 
