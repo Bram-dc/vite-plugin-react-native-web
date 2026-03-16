@@ -28,9 +28,7 @@ const moduleTypes = {
 	'.flow': 'jsx',
 } as const
 
-const optimizeDepsInclude = [
-	'react-native-web',
-]
+const optimizeDepsInclude = ['react-native-web']
 
 const reactNativeWeb = (_options?: ViteReactNativeWebOptions): VitePlugin => ({
 	enforce: 'pre',
