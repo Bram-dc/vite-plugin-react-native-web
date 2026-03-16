@@ -1,9 +1,8 @@
+import type { TreeshakingOptions } from 'rolldown'
 import type { Plugin as VitePlugin } from 'vite'
-
 import type { ViteReactNativeWebOptions } from '../types'
 import { flowRemoveTypesPlugin } from './plugins/flow-remove-types-plugin'
 import { treeshakeFixPlugin } from './plugins/treeshake-fix-plugin'
-import { typeExportsFixPlugin } from './plugins/type-exports-fix'
 
 const development = process.env.NODE_ENV === 'development'
 
@@ -25,8 +24,20 @@ const extensions = [
 
 const moduleTypes = {
 	'.js': 'jsx',
+	'.mjs': 'jsx',
+	'.cjs': 'jsx',
 	'.flow': 'jsx',
 } as const
+
+const treeshakePreset = {
+	annotations: true,
+	invalidImportSideEffects: true,
+	manualPureFunctions: [],
+	moduleSideEffects: true,
+	propertyReadSideEffects: 'always',
+	unknownGlobalSideEffects: true,
+	propertyWriteSideEffects: 'always',
+} satisfies TreeshakingOptions
 
 const optimizeDepsInclude = ['react-native-web']
 
@@ -47,21 +58,21 @@ const reactNativeWeb = (_options?: ViteReactNativeWebOptions): VitePlugin => ({
 		},
 		build: {
 			rolldownOptions: {
-				resolve: {
-					extensions,
-				},
+				resolve: { extensions },
+				shimMissingExports: true,
+				treeshake: treeshakePreset,
 				moduleTypes,
-				plugins: [flowRemoveTypesPlugin(), treeshakeFixPlugin(), typeExportsFixPlugin()],
+				plugins: [flowRemoveTypesPlugin(), treeshakeFixPlugin()],
 			},
 		},
 		optimizeDeps: {
 			include: optimizeDepsInclude,
 			rolldownOptions: {
-				resolve: {
-					extensions,
-				},
+				resolve: { extensions },
+				shimMissingExports: true,
+				treeshake: treeshakePreset,
 				moduleTypes,
-				plugins: [flowRemoveTypesPlugin(), treeshakeFixPlugin(), typeExportsFixPlugin()],
+				plugins: [flowRemoveTypesPlugin(), treeshakeFixPlugin()],
 			},
 		},
 	}),
