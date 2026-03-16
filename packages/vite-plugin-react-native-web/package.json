@@ -42,7 +42,7 @@
 		"react-native-web"
 	],
 	"dependencies": {
-		"flow-remove-types": "^2.304.0"
+		"flow-remove-types": "^2.305.0"
 	},
 	"devDependencies": {
 		"@rollup/plugin-typescript": "^12.3.0",
