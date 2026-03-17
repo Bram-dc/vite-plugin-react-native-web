@@ -97,6 +97,12 @@ importers:
       flow-remove-types:
         specifier: ^2.305.0
         version: 2.305.0
+      inline-style-prefixer:
+        specifier: '*'
+        version: 7.0.1
+      react-native-web:
+        specifier: '*'
+        version: 0.21.2(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
     devDependencies:
       '@rollup/plugin-typescript':
         specifier: ^12.3.0

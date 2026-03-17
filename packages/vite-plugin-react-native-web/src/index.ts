@@ -39,7 +39,16 @@ const treeshakePreset = {
 	propertyWriteSideEffects: 'always',
 } satisfies TreeshakingOptions
 
-const optimizeDepsInclude = ['react-native-web']
+const optimizeDepsInclude = [
+	'react-native-web',
+	'inline-style-prefixer/lib/createPrefixer',
+	'inline-style-prefixer/lib/plugins/crossFade',
+	'inline-style-prefixer/lib/plugins/imageSet',
+	'inline-style-prefixer/lib/plugins/logical',
+	'inline-style-prefixer/lib/plugins/position',
+	'inline-style-prefixer/lib/plugins/sizing',
+	'inline-style-prefixer/lib/plugins/transition',
+]
 
 const reactNativeWeb = (_options?: ViteReactNativeWebOptions): VitePlugin => ({
 	enforce: 'pre',
