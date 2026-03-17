@@ -50,6 +50,17 @@ const optimizeDepsInclude = [
 	'inline-style-prefixer/lib/plugins/transition',
 ]
 
+const silencedLogs = [
+	{
+		code: 'EVAL',
+		file: 'expo/src/async-require/fetchThenEvalJs.ts',
+	},
+	{
+		code: 'EVAL',
+		file: 'expo-modules-core/src/uuid/index.web.ts',
+	},
+]
+
 const reactNativeWeb = (_options?: ViteReactNativeWebOptions): VitePlugin => ({
 	enforce: 'pre',
 	name: 'react-native-web',
@@ -72,6 +83,19 @@ const reactNativeWeb = (_options?: ViteReactNativeWebOptions): VitePlugin => ({
 				treeshake: treeshakePreset,
 				moduleTypes,
 				plugins: [flowRemoveTypesPlugin(), treeshakeFixPlugin()],
+				onLog(level, log, defaultHandler) {
+					const code = log.code
+					const file = log.loc?.file
+					if (
+						code &&
+						file &&
+						silencedLogs.some((silencedLog) => code === silencedLog.code && file.includes(silencedLog.file))
+					) {
+						return
+					}
+
+					defaultHandler(level, log)
+				},
 			},
 		},
 		optimizeDeps: {
