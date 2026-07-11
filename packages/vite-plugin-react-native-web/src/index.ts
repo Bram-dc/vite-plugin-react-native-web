@@ -4,8 +4,6 @@ import type { ViteReactNativeWebOptions } from '../types'
 import { flowRemoveTypesPlugin } from './plugins/flow-remove-types-plugin'
 import { treeshakeFixPlugin } from './plugins/treeshake-fix-plugin'
 
-const development = process.env.NODE_ENV === 'development'
-
 const extensions = [
 	'.web.mjs',
 	'.mjs',
@@ -27,6 +25,10 @@ const moduleTypes = {
 	'.mjs': 'jsx',
 	'.cjs': 'jsx',
 	'.flow': 'jsx',
+	'.ts': 'ts',
+	'.mts': 'ts',
+	'.cts': 'ts',
+	'.tsx': 'tsx',
 } as const
 
 const treeshakePreset = {
@@ -65,11 +67,11 @@ const reactNativeWeb = (_options?: ViteReactNativeWebOptions): VitePlugin => ({
 	enforce: 'pre',
 	name: 'react-native-web',
 
-	config: () => ({
+	config: (_config, env) => ({
 		define: {
 			global: 'globalThis',
-			__DEV__: JSON.stringify(development),
-			'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV),
+			__DEV__: JSON.stringify(env.mode === 'development'),
+			'process.env.NODE_ENV': JSON.stringify(env.mode === 'development' ? 'development' : 'production'),
 			'process.env.EXPO_OS': JSON.stringify('web'),
 		},
 		resolve: {
