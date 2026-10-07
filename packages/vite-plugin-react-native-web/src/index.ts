@@ -41,8 +41,7 @@ const treeshakePreset = {
 	propertyWriteSideEffects: 'always',
 } satisfies TreeshakingOptions
 
-const optimizeDepsInclude = [
-	'react-native-web',
+const reactNativeWebDependencies = [
 	'inline-style-prefixer/lib/createPrefixer',
 	'inline-style-prefixer/lib/plugins/crossFade',
 	'inline-style-prefixer/lib/plugins/imageSet',
@@ -50,7 +49,9 @@ const optimizeDepsInclude = [
 	'inline-style-prefixer/lib/plugins/position',
 	'inline-style-prefixer/lib/plugins/sizing',
 	'inline-style-prefixer/lib/plugins/transition',
-]
+].map((dependency) => `react-native-web > ${dependency}`)
+
+const optimizeDepsInclude = ['react-native-web', ...reactNativeWebDependencies]
 
 const silencedLogs = [
 	{

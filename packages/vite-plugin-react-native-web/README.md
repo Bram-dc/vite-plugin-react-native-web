@@ -33,13 +33,15 @@ The following variables are defined in the transformed files: (inferred during V
 
 ## Peer Dependencies
 
-This plugin requires `react-native-web` and `inline-style-prefixer` as peer dependencies. **You must install them in the `node_modules` directory of the app where you use this plugin.**
+This plugin requires `react-native-web` as a peer dependency. **You must install it in the `node_modules` directory of the app where you use this plugin.**
 
-> **Note:** If you are using pnpm or a workspace setup, peer dependencies may be installed in nested `node_modules` folders by default. To avoid issues, ensure both `react-native-web` and `inline-style-prefixer` are installed in the app's own `node_modules` directory:
+> **Note:** If you are using pnpm or a workspace setup, peer dependencies may be installed in nested `node_modules` folders by default. To avoid issues, ensure `react-native-web` is installed in the app's own `node_modules` directory:
 
 ```sh
-pnpm add react-native-web inline-style-prefixer
+pnpm add react-native-web
 ```
+
+The plugin resolves `inline-style-prefixer` through `react-native-web`, so it no longer has to be installed in the app.
 
 ## Examples
 

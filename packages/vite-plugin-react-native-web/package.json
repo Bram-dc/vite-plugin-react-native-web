@@ -46,7 +46,6 @@
 		"flow-remove-types": "^2.305.0"
 	},
 	"peerDependencies": {
-		"inline-style-prefixer": "*",
 		"react-native-web": "*"
 	},
 	"devDependencies": {
