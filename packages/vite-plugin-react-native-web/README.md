@@ -43,10 +43,36 @@ pnpm add react-native-web
 
 The plugin resolves `inline-style-prefixer` through `react-native-web`, so it no longer has to be installed in the app.
 
+## Server-side rendering
+
+The plugin also configures every environment that runs on the server, such as Vite's `ssr` environment:
+
+- `react-native-web` and every dependency that depends on `react-native` or `react-native-web` are bundled instead of being loaded by Node.js. Their `react-native` imports are aliased and compiled like in the browser. The dependencies are found by crawling your `package.json`.
+- In development, JSX and Flow in those dependencies are compiled, and the CommonJS helpers of `react-native-web` are pre-bundled, so Vite's module runner can execute them.
+
+Render through `AppRegistry` on both sides, so the server produces the same wrapper the browser hydrates:
+
+```tsx
+// server
+AppRegistry.registerComponent('App', () => App)
+const { element, getStyleElement } = AppRegistry.getApplication('App')
+const html = renderToString(element)
+const css = renderToStaticMarkup(getStyleElement())
+
+// browser
+AppRegistry.registerComponent('App', () => App)
+AppRegistry.runApplication('App', { rootTag: document.getElementById('root'), hydrate: true })
+```
+
+The [SSR example](./apps/ssr-example) shows a complete setup with React Navigation, a development server with HMR and a production server.
+
+Dependencies that mix CommonJS files into an ES module package, such as `@expo/vector-icons`, cannot run in Vite's development module runner. They work in `vite build`. To bundle the server build completely, for example for a container without `node_modules`, set `environments.ssr.resolve.noExternal` to `true` for `vite build`.
+
 ## Examples
 
 - [React + TypeScript + Vite + React Native Web Example](./apps/example)
 - [React + TypeScript + Expo + Vite + React Native Web Example](./apps/expo-example)
+- [React + TypeScript + Vite + React Native Web SSR Example](./apps/ssr-example)
 
 ## Contributing
 

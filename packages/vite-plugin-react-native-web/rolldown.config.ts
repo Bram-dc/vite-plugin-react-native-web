@@ -3,7 +3,7 @@ import { defineConfig } from 'rolldown'
 
 export default defineConfig({
 	input: 'src/index.ts',
-	external: ['flow-remove-types', 'vite'],
+	external: ['flow-remove-types', 'vite', 'vitefu', /^node:/],
 	output: [
 		{
 			format: 'cjs',
